@@ -46,7 +46,7 @@ b_make_plot = 1; % Do we need plots or just numbers?
 % ------------------------------------------------------------------------
 save_file = fullfile(cd, '..', 'temp_data', ...
     sprintf('%s_info.mat', seq_name)); % 
-
+tic
 if b_encode == 1 || ~exist(save_file, 'file')
     % This function specifies where the HEVC dataset folder is
     enc_params = make_encoding_param('num_frames', num_frames, 'QP', QP);
@@ -88,7 +88,7 @@ else
     load(save_file, 'Y_low_res', 'rgb_cell', 'Y_high_res_gt', ...
         'dec_info', 'hevc_info');
 end
-
+toc
 % ------------------------------------------------------------------------
 % Frame-by-frame SR
 % ------------------------------------------------------------------------

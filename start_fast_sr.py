@@ -55,13 +55,19 @@ if b_encode == 1 or logical_not(exist(save_file, 'file')):
     # start_fast_sr.m:52
     yuv_filename, img_width, img_height = get_file_info_in_video_test_set(enc_params.test_yuv_dir, seq_name, nargout=3)
     # start_fast_sr.m:53
+    #just load rgb frames
     rgb_cell = load_rgb_cell_from_yuv(fullfile(enc_params.test_yuv_dir, yuv_filename), img_width, img_height,
                                       num_frames)
     # start_fast_sr.m:57
+
+    #convert tgb to ycbrb and get the Y component
     Y_high_res_gt = rgb2y_cell(rgb_cell)
     # start_fast_sr.m:59
+
+    #downscale image
     rgb_half_cell = imdownsample_cell(rgb_cell, 2, clip_dim)
     # start_fast_sr.m:62
+    #encode images with HEVC
     enc_info = encode_sequence_from_cell(rgb_half_cell, seq_name, enc_params)
     # start_fast_sr.m:65
     dec_info = get_dumped_information(enc_params, enc_info)
