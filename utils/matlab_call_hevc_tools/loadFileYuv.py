@@ -18,7 +18,7 @@ def loadFileYuv(fileName=None, width=None, height=None, idxFrame=None):
     # loadFileYuv.m:17
     for f in arange(1, nrFrame, 1).reshape(-1):
         # search fileId position
-        sizeFrame = dot(dot(1.5, width), height)
+        sizeFrame = 1.5 * width * height
         # loadFileYuv.m:25
         fseek(fileId, dot((idxFrame(f) - 1), sizeFrame), 'bof')
         buf = fread(fileId, dot(width, height), 'uchar')

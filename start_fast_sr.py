@@ -1,7 +1,7 @@
 # Generated with SMOP  0.41
 from libsmop import *
 from fast_sr.hevc_transfer_sr import hevc_transfer_sr
-
+from utils.matlab_call_hevc_tools.make_encoding_param import make_encoding_param
 import os
 result_path = 'results'
 if not os.path.exists(result_path):
@@ -51,7 +51,7 @@ save_file = 'temp/%s.dat' % seq_name
 
 if b_encode == 1 or logical_not(exist(save_file, 'file')):
     # This function specifies where the HEVC dataset folder is
-    enc_params = make_encoding_param('num_frames', num_frames, 'QP', QP)
+    enc_params = make_encoding_param(num_frames=num_frames, QP=QP)
     # start_fast_sr.m:52
     yuv_filename, img_width, img_height = get_file_info_in_video_test_set(enc_params.test_yuv_dir, seq_name, nargout=3)
     # start_fast_sr.m:53

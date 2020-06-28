@@ -1,6 +1,7 @@
 # Generated with SMOP  0.41
 from libsmop import *
-
+from utils.matlab_call_hevc_tools.parse_dumped_coeff_multiple_poc import parse_dumped_coeff_multiple_poc
+from utils.matlab_call_hevc_tools.load_Y_of_yuv import load_Y_of_yuv
 
 # parse_all_saved_info.m
 
@@ -9,19 +10,14 @@ def parse_all_saved_info(dec_info=None):
     # ------------------------------------------------------------------------
     # Parse the dumped.txt
     # ------------------------------------------------------------------------
-    PU_all, res_luma_all = parse_dumped_coeff_multiple_poc(dec_info.dump_txt_name, nargout=2)
-    # parse_all_saved_info.m:7
+    PU_all, res_luma_all = parse_dumped_coeff_multiple_poc(dec_info.dump_txt_name)
     img_width = dec_info.enc_info.img_width
-    # parse_all_saved_info.m:9
     img_height = dec_info.enc_info.img_height
-    # parse_all_saved_info.m:10
     N_frames = length(PU_all)
-    # parse_all_saved_info.m:11
     # ------------------------------------------------------------------------
     # For DEBUG ONLY!
     # ------------------------------------------------------------------------
     db_var = 0
-    # parse_all_saved_info.m:16
     if db_var == 1:
         if logical_not(exist(fullfile(cd, 'temp_data'), 'dir')):
             mkdir(fullfile(cd, 'temp_data'))

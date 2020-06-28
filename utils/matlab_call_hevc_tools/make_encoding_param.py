@@ -2,44 +2,32 @@
 from libsmop import *
 
 
-# make_encoding_param.m
-
-
-@function
-def make_encoding_param(varargin=None, *args, **kwargs):
-    varargin = make_encoding_param.varargin
-    nargin = make_encoding_param.nargin
-
-    filepath = mfilename('fullpath')
+def make_encoding_param(*args, **kwargs):
+    filepath = '.'
     # make_encoding_param.m:3
-    tool_folder_path, __, __ = fileparts(filepath, nargout=3)
+    tool_folder_path = os.path.join('.', 'utils', 'matlab_call_hevc_tools')
     # make_encoding_param.m:4
     # ------------------------------------------------------------------------
     # Default parameters
     # ------------------------------------------------------------------------
-    params.hm_main_dir = copy(fullfile(tool_folder_path, 'hm'))
-    # make_encoding_param.m:9
-    params.hm_bin_dir = copy(fullfile(params.hm_main_dir, 'bin'))
-    # make_encoding_param.m:10
-    params.cfg_dir = copy(fullfile(params.hm_main_dir, 'cfg'))
-    # make_encoding_param.m:11
-    params.cfg_sequence_dir = copy(fullfile(params.cfg_dir, 'per-sequence'))
-    # make_encoding_param.m:12
-    params.width = copy([])
-    # make_encoding_param.m:13
-    params.height = copy([])
-    # make_encoding_param.m:14
-    params.QP = copy([])
-    # make_encoding_param.m:15
-    params.test_yuv_dir = copy(fullfile(cd, 'data'))
-    # make_encoding_param.m:17
-    params.main_cfg_setting = copy('encoder_lowdelay_P_main')
-    # make_encoding_param.m:19
-    params.num_frames = copy([])
-    # make_encoding_param.m:21
+    params = struct()
+    params.hm_main_dir = os.path.join(tool_folder_path, 'hm')
+    params.hm_bin_dir = os.path.join(params.hm_bin_dir, 'bin')
+
+    params.cfg_dir = os.path.join(params.hm_main_dir, 'cfg')
+    params.cfg_sequence_dir = os.path.join(params.cfg_dir, 'per-sequence')
+
+    params.width = []
+    params.height = []
+
+    params.QP = []
+
+    params.test_yuv_dir = os.path.join('.', 'data')
+
+    params.main_cfg_setting = 'encoder_lowdelay_P_main'
+    params.num_frames = []
     # ------------------------------------------------------------------------
     # Parse the new parameters
     # ------------------------------------------------------------------------
-    for i in arange(1, length(varargin), 2).reshape(-1):
-        setattr(params, varargin[i], varargin[i + 1])
-# make_encoding_param.m:27
+    for key in kwargs:
+        setattr(params, key, kwargs[key])
