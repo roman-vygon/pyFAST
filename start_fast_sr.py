@@ -2,6 +2,7 @@
 from libsmop import *
 from fast_sr.hevc_transfer_sr import hevc_transfer_sr
 from utils.matlab_call_hevc_tools.make_encoding_param import make_encoding_param
+from utils.matlab_call_hevc_tools.get_file_info_in_video_test_set import get_file_info_in_video_test_set
 import os
 result_path = 'results'
 if not os.path.exists(result_path):
@@ -52,9 +53,10 @@ save_file = 'temp/%s.dat' % seq_name
 if b_encode == 1 or logical_not(exist(save_file, 'file')):
     # This function specifies where the HEVC dataset folder is
     enc_params = make_encoding_param(num_frames=num_frames, QP=QP)
-    # start_fast_sr.m:52
-    yuv_filename, img_width, img_height = get_file_info_in_video_test_set(enc_params.test_yuv_dir, seq_name, nargout=3)
-    # start_fast_sr.m:53
+
+    yuv_filename, img_width, img_height = get_file_info_in_video_test_set(enc_params.test_yuv_dir, seq_name)
+    print(yuv_filename, img_height, img_width)
+
     #just load rgb frames
     rgb_cell = load_rgb_cell_from_yuv(fullfile(enc_params.test_yuv_dir, yuv_filename), img_width, img_height,
                                       num_frames)

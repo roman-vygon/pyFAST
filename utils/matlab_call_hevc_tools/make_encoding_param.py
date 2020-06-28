@@ -2,7 +2,7 @@
 from libsmop import *
 
 
-def make_encoding_param(*args, **kwargs):
+def make_encoding_param(**kwargs):
     filepath = '.'
     # make_encoding_param.m:3
     tool_folder_path = os.path.join('.', 'utils', 'matlab_call_hevc_tools')
@@ -12,7 +12,7 @@ def make_encoding_param(*args, **kwargs):
     # ------------------------------------------------------------------------
     params = struct()
     params.hm_main_dir = os.path.join(tool_folder_path, 'hm')
-    params.hm_bin_dir = os.path.join(params.hm_bin_dir, 'bin')
+    params.hm_bin_dir = os.path.join(params.hm_main_dir, 'bin')
 
     params.cfg_dir = os.path.join(params.hm_main_dir, 'cfg')
     params.cfg_sequence_dir = os.path.join(params.cfg_dir, 'per-sequence')
@@ -31,3 +31,4 @@ def make_encoding_param(*args, **kwargs):
     # ------------------------------------------------------------------------
     for key in kwargs:
         setattr(params, key, kwargs[key])
+    return params
