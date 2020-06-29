@@ -1,6 +1,6 @@
 # Generated with SMOP  0.41
 from libsmop import *
-
+import numpy as np
 
 # rgb2y_cell.m
 
@@ -11,8 +11,8 @@ def rgb2y_cell(rgb_cell=None):
     # rgb2y_cell.m:4
     img_width = size(rgb_cell[1], 2)
     # rgb2y_cell.m:5
-    for i in arange(1, numel(rgb_cell)).reshape(-1):
-        rgb_vec = reshape(rgb_cell[i], dot(img_height, img_width), 3)
+    for i in range(len(rgb_cell)):
+        rgb_vec = np.reshape(rgb_cell[i], img_height*img_width), 3)
         # rgb2y_cell.m:8
         yuv_vec = convertRgbToYuv(rgb_vec)
         # rgb2y_cell.m:9

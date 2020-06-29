@@ -3,7 +3,13 @@ from libsmop import *
 from fast_sr.hevc_transfer_sr import hevc_transfer_sr
 from utils.matlab_call_hevc_tools.make_encoding_param import make_encoding_param
 from utils.matlab_call_hevc_tools.get_file_info_in_video_test_set import get_file_info_in_video_test_set
+from utils.matlab_call_hevc_tools.load_rgb_cell_from_yuv import load_rgb_cell_from_yuv
 import os
+from utils.matlab_call_hevc_tools.loadFileYuv import loadFileYuv, loadFileYuvMatlab
+import matplotlib.pyplot as plt
+#from fast_sr.rgb2y_cell import rgb2y_cell
+from tensorflow import keras
+from utils.matlab_call_hevc_tools.imdownsample_cell import imdownsample_cell
 result_path = 'results'
 if not os.path.exists(result_path):
     os.mkdir(result_path)
@@ -58,18 +64,24 @@ if b_encode == 1 or logical_not(exist(save_file, 'file')):
     print(yuv_filename, img_height, img_width)
 
     #just load rgb frames
-    rgb_cell = load_rgb_cell_from_yuv(fullfile(enc_params.test_yuv_dir, yuv_filename), img_width, img_height,
+    rgb_cell = loadFileYuvMatlab(fullfile(enc_params.test_yuv_dir, yuv_filename), img_width, img_height,
                                       num_frames)
     # start_fast_sr.m:57
-
+    np.save('YUV', rgb_cell)
     #convert tgb to ycbrb and get the Y component
-    Y_high_res_gt = rgb2y_cell(rgb_cell)
+    #Y_high_res_gt = rgb2y_cell(rgb_cell)
     # start_fast_sr.m:59
 
     #downscale image
-    rgb_half_cell = imdownsample_cell(rgb_cell, 2, clip_dim)
+    #print(rgb_cell[0][0].shape)
+
+    #plt.imshow(rgb_cell[0][1])
+    #plt.imshow(rgb_cell[0][2])
+
+    #rgb_half_cell = imdownsample_cell(rgb_cell, 2, clip_dim)
     # start_fast_sr.m:62
     #encode images with HEVC
+    """
     enc_info = encode_sequence_from_cell(rgb_half_cell, seq_name, enc_params)
     # start_fast_sr.m:65
     dec_info = get_dumped_information(enc_params, enc_info)
@@ -91,19 +103,17 @@ else:
 # ------------------------------------------------------------------------
 # Frame-by-frame SR
 # ------------------------------------------------------------------------
-sr_result_file = fullfile(cd, '..', 'temp_data', concat([seq_name, '_sr.mat']))
+sr_result_file = os.path.join('..', 'temp_data', seq_name)
 # start_fast_sr.m:95
+model = keras.models.load_model('models/generator.h5')
+inputs = keras.Input((None, None, 3))
+output = model(inputs)
+model = keras.models.Model(inputs, output)
+
 if b_recall_sr == 1 or logical_not(exist(sr_result_file, 'file')):
-    # We support multiple super-resolution methods to benchmark against,
-    # but in this released code, we only include SRCNN to benchmark
-    # against.
-    sr_func = str2func(sprintf('SR_%s', method_name))
-    # start_fast_sr.m:100
-    sr_load_func = str2func(sprintf('SRload_%s', method_name))
-    # start_fast_sr.m:101
-    sr_model = sr_load_func()
-    # start_fast_sr.m:102
-    imgs_h_sr = cell(1, num_frames)
+
+
+    imgs_h_sr = []
     # start_fast_sr.m:104
     imgs_h_bicubic = cell(1, num_frames)
     # start_fast_sr.m:105
@@ -171,3 +181,4 @@ for i in arange(2, num_frames).reshape(-1):
         subplot(1, 3, 3)
         imshow(uint8(imgs_h_transfer[i]))
         title(sprintf('FAST psnr = %f', psnr_trans))
+"""

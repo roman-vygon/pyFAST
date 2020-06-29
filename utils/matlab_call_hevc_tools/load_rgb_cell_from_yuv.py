@@ -1,15 +1,13 @@
 # Generated with SMOP  0.41
 from libsmop import *
-
+from utils.matlab_call_hevc_tools.loadFileYuv import loadFileYuv
 
 # load_rgb_cell_from_yuv.m
 
 
 def load_rgb_cell_from_yuv(yuv_path=None, img_width=None, img_height=None, num_frames=None):
-    rgb_cell = cell(1, num_frames)
-    # load_rgb_cell_from_yuv.m:4
-    for i in arange(1, num_frames).reshape(-1):
-        __, rgb_cell[i], __ = loadFileYuv(yuv_path, img_width, img_height, i, nargout=3)
-    # load_rgb_cell_from_yuv.m:7
+    rgb_cell = []
+    for i in range(num_frames):
+        rgb_cell[i] = loadFrameYuv(yuv_path, img_width, img_height, i)
 
     return rgb_cell
