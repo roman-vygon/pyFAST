@@ -18,6 +18,7 @@ pip install tensorflow-gpu
 ## Authors
 
 * **Roman Vygon** 
+Correspondence to <roman.vygon@gmail.com>
 
 
 ## License
