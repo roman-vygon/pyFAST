@@ -1,4 +1,4 @@
-#pyFAST - FAST Framework python implementation
+# pyFAST - FAST Framework python implementation
 
 ## Details
 This repository is Python reimplementation of [FAST Framework](http://www.mit.edu/~sze/fast.html)
